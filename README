@@ -1,6 +1,8 @@
-Within, you will find a collection of my phpBB3 MODs.
+Simple Calendar phpBB3 MOD
 
-calendar/ - Simple topic calendar.
-	Guest editor: Rick (allingeneral.com)
+This MOD adds a calendar to the site that reads dates from special "event" topics. Forums that contain these events are enabled via the ACP, and only some users can use it.
 
-Instructions on installing the MODs can be found in the MODX files.
+Main editor: danopia (danopia)
+Guest editor: Rick (allingeneral.com)
+
+Instructions on installing the MOD can be found in the MODX file (install_calendar.xml).
