@@ -1,0 +1,83 @@
+<!-- INCLUDE overall_header.html -->
+
+<div align="center" id="calendar">
+<h2>{L_CALENDAR_TITLE}</h2>
+
+<div class="panel bg1" style="width:80%;">
+	<div class="inner"><span class="corners-top"><span></span></span>
+		<div>
+<table width="100%">
+
+<tr>
+	<td colspan="2" class="prev_month"><a href="{U_PREV_MONTH}#calendar">&lt;&lt; Previous ({PREV_MONTH_NAME})</a></td>
+	<td colspan="3" class="month" align="center"><h2><b>{TODAY}</b></h2><font style="font-size: 18px; font-weight:bold; color: #223300;">{MONTH_YEAR}</font></td>
+	<td colspan="2" class="next_month" align="right"><a href="{U_NEXT_MONTH}#calendar">Next ({NEXT_MONTH_NAME}) &gt;&gt;</a></td>
+</tr>
+<tr><th>Sunday</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th></tr>
+		<!-- BEGIN calendar_row -->
+			<tr>
+				<!-- BEGIN box -->
+					<!-- IF calendar_row.box.TYPE == "prev" -->
+						<td height="75" width="10%" class="cal_gray">{PREV_MONTH_ABBR} {calendar_row.box.DAY}</td>
+					<!-- ELSEIF calendar_row.box.TYPE == "next" -->
+						<td height="75" width="10%" class="cal_gray">{NEXT_MONTH_ABBR} {calendar_row.box.DAY}</td>
+					<!-- ELSE -->
+						<td height="75" width="14%" class="cal_{calendar_row.box.CLASS}"><ul><a href="#day{calendar_row.box.DAY}">&nbsp;{calendar_row.box.DAY}</a>
+							<!-- BEGIN event -->
+								<li><a href="#event{calendar_row.box.DAY}_{calendar_row.box.event.S_ROW_COUNT}">{calendar_row.box.event.TITLE}</a></li>
+                                <!-- IF not calendar.row.box.event.S_LAST_ROW --><center><hr width="40%"></center><!-- ENDIF -->
+
+							<!-- END event -->
+						</ul></td>
+					<!-- ENDIF -->
+				<!-- END box -->
+			</tr>
+		<!-- END calendar_row -->
+		</table></div>
+	<span class="corners-bottom"><span></span></span></div>
+</div></div>
+
+
+
+<div class="clear"></div>
+
+<!-- BEGIN calendar_row -->
+<!-- BEGIN box -->
+<!-- IF calendar_row.box.TYPE != "other" -->
+<!-- IF .calendar_row.box.event -->
+	<a id="day{calendar_row.box.DAY}">
+	<div class="panel <!-- IF calendar_row.box.event.COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF -->">
+		<div class="inner"><span class="corners-top"><span></span></span>
+
+		<div class="content">
+			<h2 style="font-size: large;"><b>{MONTH_NAME} {calendar_row.box.DAY}<sup>{calendar_row.box.SUFFIX}</sup>, {YEAR}</b></h2>
+
+			<!-- BEGIN event -->
+                                <!-- IF calendar_row.box.event.NEW == "1" -->
+				<dl>
+					<dt id="event{calendar_row.box.DAY}_{calendar_row.box.event.S_ROW_COUNT}"><a href="{calendar_row.box.event.LINK}"><h2><b>{calendar_row.box.event.TITLE}</b></h2> - Click to view Forum Topic (including any replies)</a></dt>
+					<hr class="dashed" />
+					<dd>{calendar_row.box.event.DESC}</dd>
+                                        <hr class="dashed" />
+					<dd><a href="#calendar" class="top2">{L_BACK_TO_TOP}</a></dd>
+				</dl>
+				<!-- ELSE -->
+				<dl>
+                                        <dt id="event{calendar_row.box.DAY}_{calendar_row.box.event.S_ROW_COUNT}"><a href="{calendar_row.box.event.LINK}"><h2><b>{calendar_row.box.event.TITLE}</b> <small>(Continued from yesterday)</small></h2> - Click to view Forum Topic</a></dt>
+					<hr class="dashed" />
+                                        <dd><a href="#calendar" class="top2">{L_BACK_TO_TOP}</a></dd>
+                                </dl>
+				<!-- ENDIF -->
+				<!-- IF not calendar.row.box.event.S_LAST_ROW --><hr class="dashed" /><!-- ENDIF -->
+			<!-- END event -->
+		</div>
+
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+<!-- ENDIF -->
+<!-- ENDIF -->
+<!-- END box -->
+<!-- END calendar_row -->
+
+<!-- INCLUDE jumpbox.html -->
+<!-- INCLUDE overall_footer.html -->

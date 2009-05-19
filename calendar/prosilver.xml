@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml-stylesheet type="text/xsl" href="modx.prosilver.en.xsl"?>
+<!--For security purposes, please check: http://www.phpbb.com/mods/ for the latest version of this MOD. Although MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD. No support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.1.xsd">
+	<header>
+		<license>http://opensource.org/licenses/gpl-license.php GNU General Public License v2</license>
+		
+		<title>Topic Calendar</title>
+		<description>This MOD adds a calendar to the site that reads dates from special "event" topics.</description>
+		<author-notes>Forums that contain these events are enabled via the ACP, and only some users can use it.</author-notes>
+		
+		<author-group>
+			<author>
+				<realname>Daniel Danopia</realname>
+				<username>danopia</username>
+				<homepage>http://danopia.net/</homepage>
+			</author>
+		</author-group>
+		
+		<mod-version>0.0.1</mod-version>
+		
+		<installation>
+			<level>easy</level>
+			<time>300</time>
+
+			<target-version>3.0.2</target-version>
+		</installation>
+
+		<history>
+			<entry>
+				<date>2008-11-06</date>
+				<rev-version>0.0.1</rev-version>
+				<changelog>
+				    <change>Set up MODX file with my PHP code from before</change>
+				</changelog>
+			</entry>
+		</history>
+	</header>
+	<action-group>
+		<copy>
+			<file from="root/styles/prosilver/template/calendar_view.html" to="styles/prosilver/template/calendar_view.html" />
+
+			<file from="root/styles/prosilver/theme/images/icon_calendar.gif" to="styles/prosilver/theme/images/icon_calendar.gif" />
+		</copy>
+		
+		<open src="styles/prosilver/template/overall_header.html">
+			<edit>
+				<find><![CDATA[ 			<li class="icon-faq"><a href="{U_FAQ}" title="{L_FAQ_EXPLAIN}">{L_FAQ}</a></li>]]></find>
+				<action type="before-add"><![CDATA[				<li class="icon-calendar"><a href="{U_CALENDAR}" title="School Calendar">Calendar</a></li>]]></action>
+			</edit>
+		</open>
+
+		<open src="styles/prosilver/theme/colours.css">
+			<edit>
+				<find><![CDATA[.icon-members					{ background-image: url("{T_THEME_PATH}/images/icon_members.gif"); }]]></find>
+				<action type="before-add"><![CDATA[.icon-calendar					{ background-image: url("{T_THEME_PATH}/images/icon_calendar.gif"); }]]></action>
+			</edit>
+		</open>
+		
+		<open src="styles/prosilver/theme/buttons.css">
+			<edit>
+				<find><![CDATA[.sitehome, .icon-faq, .icon-members, .icon-home, .icon-ucp, .icon-register, .icon-logout,
+.icon-bookmark, .icon-bump, .icon-subscribe, .icon-unsubscribe, .icon-pages, .icon-search]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[.icon-search]]></inline-find>
+					<inline-action type="after-add"><![CDATA[, .icon-calendar]]></inline-action>
+				</inline-edit>
+			</edit>
+		</open>
+		
+		<open src="styles/prosilver/theme/content.css">
+			<edit>
+				<find><![CDATA[---------------------------------------- */]]></find>
+				<action type="after-add"><![CDATA[
+
+/*+ Simple Topic Calendar styling - MOD by danopia */
+#calendar tr td.month {
+	text-align: center;
+}
+
+#calendar tr td.month h3 {
+	font-size: 1.5em;
+	margin: 0 0 0 0;
+}
+
+#calendar tr td.next_month {
+	text-align: right;
+}
+
+#calendar tr th, #calendar tr td.next_month, #calendar tr td.prev_month {
+	font-weight: bold;
+	text-transform: uppercase;
+	color: #989898;
+}
+
+#calendar tr td.cal_weekend,  #calendar tr td.cal_weekend ul, 
+#calendar tr td.cal_noschool, #calendar tr td.cal_noschool ul {
+	color: darkgray;
+	background-color: #ff9;
+}
+
+#calendar tr td.cal_noschool ul li {
+	list-style-type: none;
+	margin-left: 0;
+	margin-top: 15px;
+	text-align: center;
+}
+
+#calendar tr td.cal_plain {
+	border: 1px solid gray;
+}
+
+#calendar tr td.cal_gray {
+	/*border: 1px solid white;*/
+	background-color: #f3fcfd;
+}
+
+#calendar tr td.cal_currentday {
+        border: 1px solid red;
+	background-color: #f6f4d0;
+}
+
+#calendar tr td.cal_plain, #calendar tr td.cal_plain * {
+	background-color: white;
+}
+
+#calendar tr td.cal_gray, #calendar tr td.cal_gray * {
+	color: darkgray;
+}
+
+#calendar tr td.cal_currentday, #calendar tr td.cal_currentday * {
+        color: red;
+	font-weight: bold;
+}
+
+
+#calendar tr td {
+	vertical-align: top;
+}
+
+#calendar tr td ul li {
+	/*margin: 0 0 0 0;*/
+	margin-left: 17px;
+	/*padding: 0 0 0 0;*/
+}
+/*- Simple Topic Calendar styling - MOD by danopia */
+
+]]>
+				</action>
+			</edit>
+		</open>
+		
+		<open src="styles/prosilver/posting_editor.html">
+			<edit>
+				<find><![CDATA[	<!-- IF S_SHOW_TOPIC_ICONS or S_SHOW_PM_ICONS -->]]></find>
+				<action type="before-add"><![CDATA[
+			<!-- IF S_SHOW_DATE_SELECTERS -->
+	<dl>
+		<dt><label>{L_EVENT_START}:</label><br />{L_EVENT_START_DESC}</dt>
+		<dd>
+			<label for="event_start_day">{L_DAY}: <select name="event_start_day" id="event_start_day">{S_START_DAY_OPTIONS}</select></label> 
+			<label for="event_start_month">{L_MONTH}: <select name="event_start_month" id="event_start_month">{S_START_MONTH_OPTIONS}</select></label> 
+			<label for="event_start_year">{L_YEAR}: <select name="event_start_year" id="event_start_year">{S_START_YEAR_OPTIONS}</select></label>
+		</dd>
+	</dl>
+	<dl>
+		<dt><label>{L_EVENT_END}:</label><br />{L_EVENT_END_DESC}</dt>
+		<dd>
+			<label for="event_end_day">{L_DAY}: <select name="event_end_day" id="event_end_day">{S_END_DAY_OPTIONS}</select></label> 
+			<label for="event_end_month">{L_MONTH}: <select name="event_end_month" id="event_end_month">{S_END_MONTH_OPTIONS}</select></label> 
+			<label for="event_end_year">{L_YEAR}: <select name="event_end_year" id="event_end_year">{S_END_YEAR_OPTIONS}</select></label>
+		</dd>
+	</dl>
+	<!-- ENDIF -->
+
+]]>
+				</action>
+			</edit>
+		</open>
+
+		<diy-instructions lang="en">Once done make sure to purge the cache and/or refresh your styles.</diy-instructions>
+	</action-group>
+
+</mod>
