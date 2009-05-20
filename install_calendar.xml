@@ -15,11 +15,6 @@
 				<username>danopia</username>
 				<homepage>http://danopia.net/</homepage>
 			</author>
-			<author>
-				<realname>Rick</realname>
-				<username>allingeneral.com</username>
-				<homepage>http://krnlpanic.com/</homepage>
-			</author>
 		</author-group>
 		
 		<mod-version>0.0.2a</mod-version>
@@ -32,22 +27,26 @@
 		</installation>
 
 		<history>
-			<entry>
-				<date>2009-03-25</date>
-				<rev-version>0.0.2a</rev-version>
-				<changelog>
-					<change>Added Current Day styles to highlight current day</change>
-					<change>Moved files into appropriate hierarchy in package</change>
-					<change>Various style updates</change>
-					<change>Added current day display</change>
-				</changelog>
-			</entry>
+                        <entry>
+                                <date>2009-03-25</date>
+                                <rev-version>0.0.2a</rev-version>
+                                <changelog>
+                                    <change>Added Current Day styles to highlight current day</change>
+				    <change>Moved files into appropriate hierarchy in package</change>
+				    <change>Various style updates</change>
+                                    <change>Added current day display</change>
+                                    <change></change>
+                                    <change></change>
+                                    <change></change>
+                                    <change></change>
+                                </changelog>
+                        </entry>
 
 			<entry>
 				<date>2008-11-06</date>
 				<rev-version>0.0.1</rev-version>
 				<changelog>
-					<change>Set up MODX file with my PHP code from before</change>
+				    <change>Set up MODX file with my PHP code from before</change>
 				</changelog>
 			</entry>
 		</history>

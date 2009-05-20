@@ -3,7 +3,9 @@
 <div align="center" id="calendar">
 <h2>{L_CALENDAR_TITLE}</h2>
 
-<div class="panel bg1" style="width:80%;">
+<strong><h2>Gun Shows and Firearms Events in Virginia</h2></strong>
+
+<div class="panel bg1" style="width:95%;">
 	<div class="inner"><span class="corners-top"><span></span></span>
 		<div>
 <table width="100%">
@@ -24,7 +26,7 @@
 					<!-- ELSE -->
 						<td height="75" width="14%" class="cal_{calendar_row.box.CLASS}"><ul><a href="#day{calendar_row.box.DAY}">&nbsp;{calendar_row.box.DAY}</a>
 							<!-- BEGIN event -->
-								<li><a href="#event{calendar_row.box.DAY}_{calendar_row.box.event.S_ROW_COUNT}">{calendar_row.box.event.TITLE}</a></li>
+								<li><a href="#event{calendar_row.box.DAY}_{calendar_row.box.event.S_ROW_COUNT}" alt="{calendar_row.box.event.TITLE}">{calendar_row.box.event.TITLE_SHORT}</a></li>
                                 <!-- IF not calendar.row.box.event.S_LAST_ROW --><center><hr width="40%"></center><!-- ENDIF -->
 
 							<!-- END event -->
