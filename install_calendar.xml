@@ -65,6 +65,7 @@ ALTER TABLE phpbb_forums ADD enable_events TINYINT(1) UNSIGNED NOT NULL DEFAULT 
 
 		<copy>
 			<file from="root/viewcalendar.php" to="viewcalendar.php" />
+			<file from="root/styles/prosilver/template/calendar_view.html" to="styles/prosilver/template/calendar_view.html" />
 		</copy>
 
 		<open src="includes/functions.php">
