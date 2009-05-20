@@ -39,7 +39,6 @@
 	<action-group>
 		<copy>
 			<file from="root/styles/prosilver/template/calendar_view.html" to="styles/prosilver/template/calendar_view.html" />
-
 			<file from="root/styles/prosilver/theme/images/icon_calendar.gif" to="styles/prosilver/theme/images/icon_calendar.gif" />
 		</copy>
 		
@@ -150,7 +149,7 @@
 			</edit>
 		</open>
 		
-		<open src="styles/prosilver/posting_editor.html">
+		<open src="styles/prosilver/template/posting_editor.html">
 			<edit>
 				<find><![CDATA[	<!-- IF S_SHOW_TOPIC_ICONS or S_SHOW_PM_ICONS -->]]></find>
 				<action type="before-add"><![CDATA[

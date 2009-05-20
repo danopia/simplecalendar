@@ -18,18 +18,22 @@ include($phpbb_root_path . 'common.' . $phpEx);
 include($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
 include($phpbb_root_path . 'includes/bbcode.' . $phpEx);
 
-function snipper($text,$length,$tail) {
-    $text = trim($text);
-    $txtl = strlen($text);
-    if($txtl > $length) {
-        for($i=1;$text[$length-$i]!=" ";$i++) {
-            if($i == $length) {
-                return substr($text,0,$length) . $tail;
-            }
-        }
-        $text = substr($text,0,$length-$i+1) . $tail;
-    }
-    return $text;
+function snipper($text, $length, $tail) {
+	$text = trim($text);
+	$txtl = strlen($text);
+	if($txtl > $length)
+	{
+		// TODO: strpos?
+		for($i = 1; $text[$length - $i] != ' '; $i++)
+		{
+			if($i == $length)
+			{
+				return substr($text, 0, $length) . $tail;
+			}
+		}
+		$text = substr($text, 0, $length - $i + 1) . $tail;
+	}
+	return $text;
 }
 
 
@@ -147,20 +151,20 @@ while ($row = $db->sql_fetchrow($result))
 	list($end_day, $end_month, $end_year) = explode('-', $row['event_end']);
 	
 	$skip = false;
-	$skip = (((int)$start_day) == 0) ? true : $skip;
+	$skip = ( ((int)$start_day) == 0) ? true : $skip;
 	
-	if (((int)$end_day) > 0)
+	if ( ((int)$end_day) > 0)
 	{
-		$skip = ((((int)$start_month) == 0) ^ (((int)$end_month) == 0)) ? true : $skip;
-		$skip = ((((int)$start_year) == 0) ^ (((int)$end_year) == 0)) ? true : $skip;
+		$skip = (( ((int)$start_month) == 0) ^ ( ((int)$end_month) == 0)) ? true : $skip;
+		$skip = (( ((int)$start_year) == 0) ^ ( ((int)$end_year) == 0)) ? true : $skip;
 		
-		$skip = ((((int)$start_year) > $year) || (((int)$end_year) < $year)) ? true : $skip;
-		$skip = ((((int)$start_month) > $month) || (((int)$end_month) < $month)) ? true : $skip;
+		$skip = (( ((int)$start_year) > $year) || ( ((int)$end_year) < $year)) ? true : $skip;
+		$skip = (( ((int)$start_month) > $month) || ( ((int)$end_month) < $month)) ? true : $skip;
 	}
 	else
 	{
-		$skip = ((((int)$start_year) > 0) && !(((int)$start_year) == $year)) ? true : $skip;
-		$skip = ((((int)$start_month) > 0) && !(((int)$start_month) == $month)) ? true : $skip;
+		$skip = (( ((int)$start_year) > 0) && !( ((int)$start_year) == $year)) ? true : $skip;
+		$skip = (( ((int)$start_month) > 0) && !( ((int)$start_month) == $month)) ? true : $skip;
 	}
 	
 	if ($skip)
@@ -261,7 +265,7 @@ for ($week = 0; $week < $week_count; $week++)
 	/*
 	 * Create a new row, ONLY if it's not the first week. If it's the
 	 * first week, the row was created above.
-	 * Also set the offset of the first box in the row, becuase as seen
+	 * Also set the offset of the first box in the row, because as seen
 	 * above ^^ the first row already has some boxes.
 	 */
 	if ($week > 0)
@@ -298,7 +302,7 @@ for ($week = 0; $week < $week_count; $week++)
 			'DAY'			=> $day,
 			'TYPE'		=> 'current',
 			'CLASS'		=> $class,
-			'SUFFIX'	=> date('S', mkdate(1, $day, 1)))
+			'SUFFIX'	=> date('S', mkdate(1, $day, 2000)))
 		);
 		// check if there are events for each day
 		if (isset($events[$day]))
@@ -360,21 +364,21 @@ $template->assign_vars(array(
 	'MONTH_YEAR'		=> date('F, Y', $this_month),
 	'MONTH_NAME'		=> date('F', $this_month),
 	'MONTH_ABBR'		=> date('M', $this_month),
-	'YEAR'			=> $year,
-	'TODAY'			=> $today_full,
+	'YEAR'					=> $year,
+	'TODAY'					=> $today_full,
 	
 	// Links to the months
-	'U_PREV_MONTH'		=> append_sid("{$phpbb_root_path}viewcalendar.$phpEx?month={$prev_month_number}&year={$prev_month_year}"),
-	'U_NEXT_MONTH'		=> append_sid("{$phpbb_root_path}viewcalendar.$phpEx?month={$next_month_number}&year={$next_month_year}"),
+	'U_PREV_MONTH'	=> append_sid("{$phpbb_root_path}viewcalendar.$phpEx?month={$prev_month_number}&year={$prev_month_year}"),
+	'U_NEXT_MONTH'	=> append_sid("{$phpbb_root_path}viewcalendar.$phpEx?month={$next_month_number}&year={$next_month_year}"),
 	
 	// Info on prev and next month, used in the back/next links and the
 	// days that are in the neighboring months
-	'PREV_YEAR'		=> $prev_month_year,
-	'PREV_MONTH'		=> $prev_month_number,
+	'PREV_YEAR'				=> $prev_month_year,
+	'PREV_MONTH'			=> $prev_month_number,
 	'PREV_MONTH_ABBR'	=> date('M', $prev_month), 
 	'PREV_MONTH_NAME'	=> date('F', $prev_month), 
-	'NEXT_YEAR'		=> $next_month_year,
-	'NEXT_MONTH'		=> $next_month_number,
+	'NEXT_YEAR'				=> $next_month_year,
+	'NEXT_MONTH'			=> $next_month_number,
 	'NEXT_MONTH_ABBR'	=> date('M', $next_month),
 	'NEXT_MONTH_NAME'	=> date('F', $next_month))
 );
