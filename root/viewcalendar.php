@@ -18,11 +18,25 @@ include($phpbb_root_path . 'common.' . $phpEx);
 include($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
 include($phpbb_root_path . 'includes/bbcode.' . $phpEx);
 
+function snipper($text,$length,$tail) {
+    $text = trim($text);
+    $txtl = strlen($text);
+    if($txtl > $length) {
+        for($i=1;$text[$length-$i]!=" ";$i++) {
+            if($i == $length) {
+                return substr($text,0,$length) . $tail;
+            }
+        }
+        $text = substr($text,0,$length-$i+1) . $tail;
+    }
+    return $text;
+}
+
+
 // Start session management
 $user->session_begin();
 $auth->acl($user->data);
 $user->setup();
-// set counter for multiple day events
 $counter = '0';
 // Get the input vars (which month?)
 $mode = request_var('mode', '');
@@ -38,9 +52,7 @@ switch ($mode)
 	break;*/
 
 	default:
-		// add this to the ACP config parameters?
-		// will need database change for this
-		$l_title = 'My Calendar Title';
+		$l_title = 'Virginia Gun Shows and Firearms Events Calendar';
 	break;
 }
 
@@ -64,7 +76,6 @@ $next_month = mkdate($month + 1, 1, $year);
 $curr_day = date('d');
 $curr_month = date('m');
 $curr_year = date('Y');
-// Today - for calendar header
 $today_full = 'Today is: ' . date('l, F jS, Y');
 
 // Number of days in month
@@ -112,7 +123,7 @@ $day = 1;
 $week_count = ceil(($this_month_count + $first_day_dow) / 7);
 
 $sql = $db->sql_build_query('SELECT', array(
-	'SELECT'	=> 't.*, p.post_text, p.bbcode_bitfield, p.bbcode_uid',
+	'SELECT'	=> 't.*, f.forum_name, p.post_text, p.bbcode_bitfield, p.bbcode_uid',
 	'FROM'		=> array(
 		POSTS_TABLE		=> 'p',
 		FORUMS_TABLE		=> 'f',
@@ -206,13 +217,26 @@ foreach ($rawevents as $row)
 	{
 		$events[$row['start_day']] = array();
 	}
+// rick update link below for SEO
+             // www.phpBB-SEO.com SEO TOOLKIT BEGIN
+$result_topic_id = $row['topic_id'];
+$u_forum_id = $row['forum_id'];
+
+             if ( empty($phpbb_seo->seo_url['topic'][$result_topic_id]) ) {
+                $phpbb_seo->seo_url['topic'][$result_topic_id] = $phpbb_seo->format_url($row['topic_title']);
+             }
+             if ( empty($phpbb_seo->seo_url['forum'][$u_forum_id]) ) {
+                $phpbb_seo->seo_url['forum'][$u_forum_id] = $phpbb_seo->set_url($row['forum_name'], $u_forum_id, $phpbb_seo->seo_static['forum']);
+             }
+             // www.phpBB-SEO.com SEO TOOLKIT END
              $view_topic_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$u_forum_id&amp;t=$result_topic_id" . (($u_hilit) ? "&amp;hilit=$u_hilit" : ''));
 
 
 for ($i = $row['start_day']; $i <= $row['end_day']; $i++) {
 	$events[$i][$row['topic_title']] = array(
               'text'  => $message,
-              'link'  => append_sid("{$phpbb_root_path}viewtopic.$phpEx?t=" . $row['topic_id']));
+  //            'link'  => append_sid("{$phpbb_root_path}viewtopic.$phpEx?t=" . $row['topic_id']));
+	      'link'  => $view_topic_url);
 	}
 }
 
@@ -255,7 +279,6 @@ for ($week = 0; $week < $week_count; $week++)
 		{ // Temporary!
 			$class = $events[$day][''];
 		}
-		// added current day
                 elseif (($day == $curr_day) && ($month == $curr_month) && ($year == $curr_year))
                 { // It's the current day - highlight
                         $class = 'currentday';
@@ -285,12 +308,10 @@ for ($week = 0; $week < $week_count; $week++)
 					// Make sure title is not blank. Blank titles exist as a
 					// temporary kludge to set classes.
 					// did we use this title already?
-			/* check for different titles so we don't display
-			   multiple-day events multiple times in the rows below the calendar */
-					// did we use this title already?
 					if ($title == $prev_title) {
 					$template->assign_block_vars('calendar_row.box.event', array(
 						'TITLE'	=> $title,
+                                                'TITLE_SHORT' => snipper($title,20,"..."),
 						'DESC'	=> $desc['text'],
 						'NEW'   => '0',
 						'COUNT' => $counter,
@@ -298,6 +319,7 @@ for ($week = 0; $week < $week_count; $week++)
 					} else {
 					$template->assign_block_vars('calendar_row.box.event', array(
                                                 'TITLE' => $title,
+						'TITLE_SHORT' => snipper($title,20,"..."),
                                                 'DESC'  => $desc['text'],
                                                 'NEW'  => '1',
 						'COUNT' => $counter,
@@ -335,7 +357,6 @@ $template->assign_vars(array(
 	'MONTH_NAME'		=> date('F', $this_month),
 	'MONTH_ABBR'		=> date('M', $this_month),
 	'YEAR'			=> $year,
-	// Pass today's date for calendar header
 	'TODAY'			=> $today_full,
 	
 	// Links to the months
