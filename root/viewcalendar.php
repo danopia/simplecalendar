@@ -52,7 +52,8 @@ switch ($mode)
 	break;*/
 
 	default:
-		$l_title = 'Virginia Gun Shows and Firearms Events Calendar';
+		// Change this as necessary
+		$l_title = 'Simple Calendar for phpbb';
 	break;
 }
 
@@ -236,8 +237,8 @@ foreach ($rawevents as $row)
 		$events[$i][$row['topic_title']] = array(
 			'text'  	=> $message,
 			'replies'	=> $row['topic_replies'],
-			'link'  	=> append_sid("{$phpbb_root_path}viewtopic.$phpEx?t=" . $row['topic_id']),
-			#'link'  	=> $view_topic_url, //www.phpBB-SEO.com SEO TOOLKIT
+			'link'  	=> append_sid("{$phpbb_root_path}viewtopic.$phpEx?t=" . $row['topic_id'])
+			//'link'  	=> $view_topic_url, //www.phpBB-SEO.com SEO TOOLKIT
 		);
 	}
 }
