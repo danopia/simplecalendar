@@ -178,13 +178,13 @@ while ($row = $db->sql_fetchrow($result))
 	
 	$rawevents[] = array_merge(array(
 		'start_day'		=> $start_day,
-		'start_month'		=> $start_month,
-		'start_year'		=> $start_year,
+		'start_month'	=> $start_month,
+		'start_year'	=> $start_year,
 		
-		'end_day'		=> $end_day,
+		'end_day'			=> $end_day,
 		'end_month'		=> $end_month,
-		'end_year'		=> $end_year),
-		$row);
+		'end_year'		=> $end_year,
+	), $row);
 }
 $db->sql_freeresult($result);
 
@@ -197,7 +197,7 @@ if ($bbcode_bitfield !== '')
 $events = array();
 foreach ($rawevents as $row)
 {
-	// viewtopic.php is awesume.	
+	// viewtopic.php is awesome.	
 	// Parse the message and subject
 	$message = censor_text($row['post_text']);
 
@@ -217,26 +217,28 @@ foreach ($rawevents as $row)
 	{
 		$events[$row['start_day']] = array();
 	}
-// rick update link below for SEO
-             // www.phpBB-SEO.com SEO TOOLKIT BEGIN
-$result_topic_id = $row['topic_id'];
-$u_forum_id = $row['forum_id'];
+	
+	/* PHPBB-SEO www.phpbb-seo.com Advanced SEO rewrite toolkit BEGIN
+	$result_topic_id = $row['topic_id'];
+	$u_forum_id = $row['forum_id'];
 
-             if ( empty($phpbb_seo->seo_url['topic'][$result_topic_id]) ) {
-                $phpbb_seo->seo_url['topic'][$result_topic_id] = $phpbb_seo->format_url($row['topic_title']);
-             }
-             if ( empty($phpbb_seo->seo_url['forum'][$u_forum_id]) ) {
-                $phpbb_seo->seo_url['forum'][$u_forum_id] = $phpbb_seo->set_url($row['forum_name'], $u_forum_id, $phpbb_seo->seo_static['forum']);
-             }
-             // www.phpBB-SEO.com SEO TOOLKIT END
-             $view_topic_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$u_forum_id&amp;t=$result_topic_id" . (($u_hilit) ? "&amp;hilit=$u_hilit" : ''));
+	if ( empty($phpbb_seo->seo_url['topic'][$result_topic_id]) ) {
+		$phpbb_seo->seo_url['topic'][$result_topic_id] = $phpbb_seo->format_url($row['topic_title']);
+	}
+	if ( empty($phpbb_seo->seo_url['forum'][$u_forum_id]) ) {
+		$phpbb_seo->seo_url['forum'][$u_forum_id] = $phpbb_seo->set_url($row['forum_name'], $u_forum_id, $phpbb_seo->seo_static['forum']);
+	}
+	// www.phpBB-SEO.com SEO TOOLKIT END */
+	$view_topic_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$u_forum_id&amp;t=$result_topic_id" . (($u_hilit) ? "&amp;hilit=$u_hilit" : ''));
 
 
-for ($i = $row['start_day']; $i <= $row['end_day']; $i++) {
-	$events[$i][$row['topic_title']] = array(
-              'text'  => $message,
-  //            'link'  => append_sid("{$phpbb_root_path}viewtopic.$phpEx?t=" . $row['topic_id']));
-	      'link'  => $view_topic_url);
+	for ($i = $row['start_day']; $i <= $row['end_day']; $i++) {
+		$events[$i][$row['topic_title']] = array(
+			'text'  	=> $message,
+			'replies'	=> $row['topic_replies'],
+			'link'  	=> append_sid("{$phpbb_root_path}viewtopic.$phpEx?t=" . $row['topic_id']),
+			#'link'  	=> $view_topic_url, //www.phpBB-SEO.com SEO TOOLKIT
+		);
 	}
 }
 
@@ -247,9 +249,9 @@ $template->assign_block_vars('calendar_row', array());
 for ($prev_day = $prev_month_count - $first_day_dow + 1; $prev_day <= $prev_month_count; $prev_day++)
 { // The loop is weird but it works.
 	$template->assign_block_vars('calendar_row.box', array(
-		'DAY' => $prev_day,
-		'TYPE' => 'prev',
-		'SUFFIX' => date('S', mkdate(1, $prev_day, 2000)))
+		'DAY'			=> $prev_day,
+		'TYPE'		=> 'prev',
+		'SUFFIX'	=> date('S', mkdate(1, $prev_day, 2000)))
 	);
 }
 // Loop once for each row/week.
@@ -263,7 +265,6 @@ for ($week = 0; $week < $week_count; $week++)
 	 */
 	if ($week > 0)
 	{
-		//echo $week;
 		$template->assign_block_vars('calendar_row', array());
 		$offset = 1;
 	}
@@ -279,10 +280,10 @@ for ($week = 0; $week < $week_count; $week++)
 		{ // Temporary!
 			$class = $events[$day][''];
 		}
-                elseif (($day == $curr_day) && ($month == $curr_month) && ($year == $curr_year))
-                { // It's the current day - highlight
-                        $class = 'currentday';
-                }
+		elseif (($day == $curr_day) && ($month == $curr_month) && ($year == $curr_year))
+		{ // It's the current day - highlight
+			$class = 'currentday';
+		}
 		elseif (($offset == 1) || ($offset == 7))
 		{ // It's a weekend, play time!
 			$class = 'weekend';
@@ -293,7 +294,7 @@ for ($week = 0; $week < $week_count; $week++)
 		}
 		// Add a new box for each day.
 		$template->assign_block_vars('calendar_row.box', array(
-			'DAY'		=> $day,
+			'DAY'			=> $day,
 			'TYPE'		=> 'current',
 			'CLASS'		=> $class,
 			'SUFFIX'	=> date('S', mkdate(1, $day, 1)))
@@ -307,25 +308,27 @@ for ($week = 0; $week < $week_count; $week++)
 				{
 					// Make sure title is not blank. Blank titles exist as a
 					// temporary kludge to set classes.
-					// did we use this title already?
+					// Did we use this title already?
 					if ($title == $prev_title) {
-					$template->assign_block_vars('calendar_row.box.event', array(
-						'TITLE'	=> $title,
-                                                'TITLE_SHORT' => snipper($title,20,"..."),
-						'DESC'	=> $desc['text'],
-						'NEW'   => '0',
-						'COUNT' => $counter,
-						'LINK'	=> $desc['link']));
+						$template->assign_block_vars('calendar_row.box.event', array(
+							'TITLE'	=> $title,
+							'TITLE_SHORT' => snipper($title, 20, '...'),
+							'DESC'	=> $desc['text'],
+							'NEW'   => '0',
+							'COUNT' => $counter,
+							'REPLIES' => $desc['replies'],
+							'LINK'	=> $desc['link']));
 					} else {
-					$template->assign_block_vars('calendar_row.box.event', array(
-                                                'TITLE' => $title,
-						'TITLE_SHORT' => snipper($title,20,"..."),
-                                                'DESC'  => $desc['text'],
-                                                'NEW'  => '1',
-						'COUNT' => $counter,
-                                                'LINK'  => $desc['link']));
+						$template->assign_block_vars('calendar_row.box.event', array(
+							'TITLE' => $title,
+							'TITLE_SHORT' => snipper($title, 20, '...'),
+							'DESC'  => $desc['text'],
+							'NEW'		=> '1',
+							'COUNT' => $counter,
+							'REPLIES' => $desc['replies'],
+							'LINK'  => $desc['link']));
 					}
-				$counter++;
+					$counter++;
 				} // if
 				$prev_title = $title;
 				unset ($title);

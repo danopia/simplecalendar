@@ -55,7 +55,7 @@
 <!-- BEGIN event -->
 <!-- IF calendar_row.box.event.NEW == "1" -->
 			<dl>
-				<dt id="event{calendar_row.box.DAY}_{calendar_row.box.event.S_ROW_COUNT}"><a href="{calendar_row.box.event.LINK}"><h2><b>{calendar_row.box.event.TITLE}</b></h2> - Click to view Forum Topic (including any replies)</a></dt>
+				<dt id="event{calendar_row.box.DAY}_{calendar_row.box.event.S_ROW_COUNT}"><a href="{calendar_row.box.event.LINK}"><h2><b>{calendar_row.box.event.TITLE}</b></h2> - Click to view Forum Topic (including <strong>{calender_row.box.REPLIES}</strong> reply(s) )</a></dt>
 				<hr class="dashed" />
 				<dd>{calendar_row.box.event.DESC}</dd>
 				<hr class="dashed" />
@@ -63,7 +63,7 @@
 			</dl>
 <!-- ELSE -->
 			<dl>
-				<dt id="event{calendar_row.box.DAY}_{calendar_row.box.event.S_ROW_COUNT}"><a href="{calendar_row.box.event.LINK}"><h2><b>{calendar_row.box.event.TITLE}</b> <small>(Continued from yesterday)</small></h2> - Click to view Forum Topic</a></dt>
+				<dt id="event{calendar_row.box.DAY}_{calendar_row.box.event.S_ROW_COUNT}"><a href="{calendar_row.box.event.LINK}"><h2><b>{calendar_row.box.event.TITLE}</b></h2> <small>(Continued from yesterday)</small> - Click to view Forum Topic (including <strong>{calender_row.box.REPLIES}</strong> reply(s) )</a></dt>
 				<hr class="dashed" />
 				<dd><a href="#calendar" class="top2">{L_BACK_TO_TOP}</a></dd>
 			</dl>
