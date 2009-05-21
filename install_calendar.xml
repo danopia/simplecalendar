@@ -221,8 +221,8 @@ $post_data['event_end']		= (!empty($post_data['event_end'])) ? $post_data['event
 	$end_year_options = '<option value="0"' . ((!$end_year) ? ' selected="selected"' : '') . '>--</option>';
 	for ($i = $now['year']; $i <= $now['year'] + 10; $i++)
 	{
-		$start_year_options .= '<option value="' . $i . '"' . (($i == $start_year) ? ' selected="selected"' : '') . ">$i</option>";
-		$end_year_options .= '<option value="' . $i . '"' . (($i == $end_year) ? ' selected="selected"' : '') . ">$i</option>";
+		$start_year_options .= '<option value="' . $i . '"' . (($i == $now['year']) ? ' selected' : '') . ">$i</option>";
+		$end_year_options .= '<option value="' . $i . '"' . (($i == $now['year']) ? ' selected' : '') . ">$i</option>";
 	}
 		
 	unset($now);
