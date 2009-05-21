@@ -53,8 +53,8 @@
 		</history>
 		
 		<link-group>
-			<link type="template" href="prosilver.xml">prosilver</link>
-			<link type="template" href="subsilver2.xml">subsilver2</link>
+			<link type="template" href="prosilver.xml" lang="en">prosilver</link>
+			<link type="template" href="subsilver2.xml" lang="en">subsilver2</link>
 		</link-group>
 	</header>
 	
@@ -65,7 +65,6 @@ ALTER TABLE phpbb_forums ADD enable_events TINYINT(1) UNSIGNED NOT NULL DEFAULT 
 
 		<copy>
 			<file from="root/viewcalendar.php" to="viewcalendar.php" />
-			<file from="root/styles/prosilver/template/calendar_view.html" to="styles/prosilver/template/calendar_view.html" />
 		</copy>
 
 		<open src="includes/functions.php">
@@ -77,8 +76,11 @@ ALTER TABLE phpbb_forums ADD enable_events TINYINT(1) UNSIGNED NOT NULL DEFAULT 
 		
 		<open src="adm/style/acp_forums.html">
 			<edit>
-				<find><![CDATA[		<dl>
-			<dt><label for="enable_icons">{L_ENABLE_TOPIC_ICONS}:</label></dt>]]></find>
+				<find><![CDATA[                <dl>
+                        <dt><label for="enable_icons">{L_ENABLE_TOPIC_ICONS}:</label></dt>
+                        <dd><label><input type="radio" class="radio" name="enable_icons" value="1"<!-- IF S_TOPIC_ICONS --> id="enable_icons" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+                                <label><input type="radio" class="radio" name="enable_icons" value="0"<!-- IF not S_TOPIC_ICONS --> id="enable_icons" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
+                </dl>]]></find>
 				<action type="before-add"><![CDATA[		<dl>
 			<dt><label for="enable_events">{L_ENABLE_TOPIC_EVENTS}:</label></dt>
 			<dd><label><input type="radio" class="radio" name="enable_events" value="1"<!-- IF S_TOPIC_EVENTS --> id="enable_events" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
@@ -259,7 +261,8 @@ $post_data['event_end']		= (!empty($post_data['event_end'])) ? $post_data['event
 			</edit>
 		</open>
 		
-		<diy-instructions><![CDATA[View the appropriate style to update style elements: prosilver.xml or subsilver2.xml.]]></diy-instructions>
+		<diy-instructions lang="en"><![CDATA[View the appropriate style to update style elements: prosilver.xml or subsilver2.xml.]]></diy-instructions>
 	</action-group>
 
 </mod>
+
