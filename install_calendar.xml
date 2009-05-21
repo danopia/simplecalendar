@@ -167,9 +167,9 @@ $post_data['event_end']		= (!empty($post_data['event_end'])) ? $post_data['event
 		$post_data['event_end'] = "$end_day-$end_month-$end_year";
 		
 		if (
-			($start_day < 0 || $start_day > 31 || $start_month < 0 || $start_month > 12 || ($start_year < 1901 && $start_year > 0) || $start_year > gmdate('Y', time()) + 50)
+			($start_day < 0 || $start_day > 31 || $start_month < 0 || $start_month > 12 || ($start_year < 2009 && $start_year > 0) || $start_year > gmdate('Y', time()) + 50)
 		||
-			($end_day < 0 || $end_day > 31 || $end_month < 0 || $end_month > 12 || ($end_year < 1901 && $end_year > 0) || $end_year > gmdate('Y', time()) + 50)
+			($end_day < 0 || $end_day > 31 || $end_month < 0 || $end_month > 12 || ($end_year < 2009 && $end_year > 0) || $end_year > gmdate('Y', time()) + 50)
 		/*||
 			(checkdate($start_month, $start_day, $start_year) === false)
 		||
@@ -219,7 +219,7 @@ $post_data['event_end']		= (!empty($post_data['event_end'])) ? $post_data['event
 
 	$start_year_options = '<option value="0"' . ((!$start_year) ? ' selected="selected"' : '') . '>--</option>';
 	$end_year_options = '<option value="0"' . ((!$end_year) ? ' selected="selected"' : '') . '>--</option>';
-	for ($i = $now['year'] - 100; $i <= $now['year'] + 100; $i++)
+	for ($i = $now['year']; $i <= $now['year'] + 10; $i++)
 	{
 		$start_year_options .= '<option value="' . $i . '"' . (($i == $start_year) ? ' selected="selected"' : '') . ">$i</option>";
 		$end_year_options .= '<option value="' . $i . '"' . (($i == $end_year) ? ' selected="selected"' : '') . ">$i</option>";
