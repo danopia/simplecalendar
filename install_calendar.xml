@@ -152,12 +152,12 @@ $post_data['event_end']		= (!empty($post_data['event_end'])) ? $post_data['event
 		$start_year = request_var('event_start_year', 0);
 		$post_data['event_start'] = "$start_day-$start_month-$start_year";
 		
-		if (!isset($_REQUEST['event_end_day']))
-		{
-			$end_day = 0;
-			$end_month = 0;
-			$end_year = 0;
-		}
+		if (!isset($_REQUEST['event_end_day']) || ($_REQUEST['event_end_day'] == '0'))
+                {
+                        $end_day = $start_day;
+                        $end_month = $start_month;
+                        $end_year = $start_year;
+                }
 		else
 		{
 			$end_day = request_var('event_end_day', 0);
@@ -224,7 +224,7 @@ $post_data['event_end']		= (!empty($post_data['event_end'])) ? $post_data['event
 		$start_year_options .= '<option value="' . $i . '"' . (($i == $now['year']) ? ' selected' : '') . ">$i</option>";
 		$end_year_options .= '<option value="' . $i . '"' . (($i == $now['year']) ? ' selected' : '') . ">$i</option>";
 	}
-		
+	
 	unset($now);
 	]]></action>
 			</edit>
