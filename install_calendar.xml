@@ -33,14 +33,14 @@
 
 		<history>
 			<entry>
-                                <date>2009-05-25</date>
-                                <rev-version>0.0.3</rev-version>
-                                <changelog>
-                                        <change>Fixed single-day event when end date is left blank (--, --, --)</change>
-                                        <change>Updated install_calendar.xml</change>
-                                        <change>Various style updates</change>
-                                </changelog>
-                        </entry>
+				<date>2009-05-25</date>
+				<rev-version>0.0.3</rev-version>
+				<changelog>
+					<change>Fixed single-day event when end date is left blank (--, --, --)</change>
+					<change>Updated install_calendar.xml</change>
+					<change>Various style updates</change>
+				</changelog>
+			</entry>
 			<entry>
 				<date>2009-03-25</date>
 				<rev-version>0.0.2a</rev-version>
