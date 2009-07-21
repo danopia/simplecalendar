@@ -51,10 +51,6 @@ $year = max($year - 1, min($year + 1, intval(request_var('year', $year))));
 // Figure out which calendar (does nothing atm)
 switch ($mode)
 {
-/*	case 'bbcode':
-		$l_title = $user->lang['BBCODE_GUIDE'];
-	break;*/
-
 	default:
 		// Change this as necessary
 		$l_title = 'Simple Calendar for phpbb';
@@ -153,13 +149,13 @@ while ($row = $db->sql_fetchrow($result))
 	$skip = false;
 	$skip = ( ((int)$start_day) == 0) ? true : $skip;
 	
-	if ( ((int)$end_day) > 0)
-	{
-		$skip = (( ((int)$start_month) == 0) ^ ( ((int)$end_month) == 0)) ? true : $skip;
-		$skip = (( ((int)$start_year) == 0) ^ ( ((int)$end_year) == 0)) ? true : $skip;
-		
-		$skip = (( ((int)$start_year) > $year) || ( ((int)$end_year) < $year)) ? true : $skip;
-		$skip = (( ((int)$start_month) > $month) || ( ((int)$end_month) < $month)) ? true : $skip;
+	if ( ((int)$end_day) > 0) //multi-day
+	{   
+		$skip = (( ((int)$start_month) == 0) ^ ( ((int)$end_month) == 0)) ? true : $skip; //skip if missing either month
+		$skip = (( ((int)$start_year) == 0) ^ ( ((int)$end_year) == 0)) ? true : $skip; //skip if missing either year
+      
+		$skip = (( ((int)$start_year) > $year) || ( ((int)$end_year) < $year)) ? true : $skip; //skip if start year in the future or end year in the past
+		$skip = ( ((((int)$start_month) > $month) && ($year == $start_year)) || ( (((int)$end_month) < $month)) && ($year == $end_year)) ? true : $skip; //skip if start month in the future or end month in the past
 	}
 	else
 	{
@@ -235,9 +231,29 @@ foreach ($rawevents as $row)
 	}
 	// www.phpBB-SEO.com SEO TOOLKIT END */
 	$view_topic_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$u_forum_id&amp;t=$result_topic_id" . (($u_hilit) ? "&amp;hilit=$u_hilit" : ''));
+   
+	// begin Shannon fix for multi-month events
+	$i_min = 1;
+	$i_max = $this_month_count;
 
+	if ($row['start_month'] != $row['end_month']) {
+		if ($month == $row['start_month']) {
+			$i_min = $row['start_day'];
+		}
+		if ($month != $row['start_month']) {
+			$i_min = 1;
+		}
+		if ($month == $row['end_month']) {
+			$i_max = $row['end_day'];
+		}
+	} else {
+		$i_min = $row['start_day'];
+		$i_max = $row['end_day'];
+	}
 
-	for ($i = $row['start_day']; $i <= $row['end_day']; $i++) {
+   
+	for ($i = $i_min; $i <= $i_max; $i++) {
+	//end Shannon fix for multi-month events
 		$events[$i][$row['topic_title']] = array(
 			'text'  	=> $message,
 			'replies'	=> $row['topic_replies'],
